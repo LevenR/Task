@@ -118,9 +118,7 @@ async function processEvents(
                             receiver: ${receiver}`
                 );
                 const user_addr = from.toLowerCase();
-                const destChainId = toChainId.toNumber();
-                console.log('destChainId:', destChainId);
-                if ( amount >= ethers.parseEther("0.0001") && destChainId == BNB_CHAIN_ID) {
+                if ( amount >= ethers.parseEther("0.0001") && toChainId == BNB_CHAIN_ID) {
                     const { error } = await supabase
                         .from('b2_test_tasks')
                         .insert([
