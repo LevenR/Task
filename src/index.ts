@@ -272,12 +272,5 @@ app.get('/', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
     main();
-    //testDatabaseConnection();
-    // testDatabaseConnection().then(() => {
-    //     main().catch((error) => {
-    //         console.error('Error in main function:', error);
-    //         process.exit(1);
-    //     });
-    // });
 });
   
