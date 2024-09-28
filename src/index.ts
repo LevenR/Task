@@ -6,14 +6,16 @@ import express from 'express';
 
 dotenv.config();
 
-if (!process.env.B2_STAKE_HUB_CONTRACT || !process.env.RPC_URL || !process.env.B2_STBTC_BRIDGE_CONTRACT) {
+if (!process.env.IS_DEV || !process.env.SUPABASE_URL || !process.env.SUPABASE_KEY || !process.env.START_TRACK_TIME || !process.env.END_TRACK_TIME) {
     console.error('Missing required environment variables.');
     process.exit(1);
 }
+const is_dev = process.env.IS_DEV === 'true';
 
-const B2_STAKE_HUB_CONTRACT = process.env.B2_STAKE_HUB_CONTRACT!;
-const B2_STBTC_BRIDGE_CONTRACT = process.env.B2_STBTC_BRIDGE_CONTRACT!;
-const RPC_URL = process.env.RPC_URL!;
+const B2_STAKE_HUB_CONTRACT = is_dev? "0x17A393c32DC014da7F0651FA87e6883f2Aa061D1" : "0x17A393c32DC014da7F0651FA87e6883f2Aa061D1";
+const B2_STBTC_BRIDGE_CONTRACT = is_dev ? "0xb7C0817Dd23DE89E4204502dd2C2EF7F57d3A3B8" : "0x964e289Ffb1D0447eA4270FCD6b974A7aD588751";
+const RPC_URL = is_dev ? "https://testnet-rpc.bsquared.network/" : "https://rpc.bsquared.network";
+
 const START_TRACK_TIME = process.env.START_TRACK_TIME!;
 const END_TRACK_TIME = process.env.END_TRACK_TIME!;
 
@@ -27,9 +29,6 @@ const B2_STAKE_HUB_ABI = [
 const B2_STBTC_BRIDGE_ABI = [
     "event Burn(address from, uint256 amount, uint256 fromChainId, uint256 toChainId, address fromStBtcAddress, address toStBtcAddress, address receiver)"
 ];
-
-console.log('SUPABASE_URL:', process.env.SUPABASE_URL!);
-console.log('SUPABASE_KEY:', process.env.SUPABASE_KEY!);
 
 const supabase = createClient(
     process.env.SUPABASE_URL!,
@@ -265,10 +264,6 @@ app.get('/', async (req, res) => {
 
 });
 
-// main().catch((error) => {
-//     console.error(error);
-//     process.exit(1);
-// });
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
     main();
