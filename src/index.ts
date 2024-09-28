@@ -230,7 +230,7 @@ async function main() {
     }
 }
   
-app.get('/', async (req, res) => {
+app.get('/check_task', async (req, res) => {
 
     const { address, date, task } = req.query;
     if (!address || !date || !task) {
