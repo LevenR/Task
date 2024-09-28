@@ -15,6 +15,7 @@ const is_dev = process.env.IS_DEV === 'true';
 const B2_STAKE_HUB_CONTRACT = is_dev? "0x17A393c32DC014da7F0651FA87e6883f2Aa061D1" : "0x17A393c32DC014da7F0651FA87e6883f2Aa061D1";
 const B2_STBTC_BRIDGE_CONTRACT = is_dev ? "0xb7C0817Dd23DE89E4204502dd2C2EF7F57d3A3B8" : "0x964e289Ffb1D0447eA4270FCD6b974A7aD588751";
 const RPC_URL = is_dev ? "https://testnet-rpc.bsquared.network/" : "https://rpc.bsquared.network";
+const BNB_CHAIN_ID = is_dev ? 97 : 56;
 
 const START_TRACK_TIME = process.env.START_TRACK_TIME!;
 const END_TRACK_TIME = process.env.END_TRACK_TIME!;
@@ -117,7 +118,9 @@ async function processEvents(
                             receiver: ${receiver}`
                 );
                 const user_addr = from.toLowerCase();
-                if ( amount >= ethers.parseEther("0.0001")) {
+                const destChainId = toChainId.toNumber();
+                console.log('destChainId:', destChainId);
+                if ( amount >= ethers.parseEther("0.0001") && destChainId == BNB_CHAIN_ID) {
                     const { error } = await supabase
                         .from('b2_test_tasks')
                         .insert([
